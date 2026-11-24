@@ -26,12 +26,11 @@ php artisan serve
 
 Or just double-click **`start-syro.bat`** after the first setup — it starts XAMPP's MySQL and the server, and opens http://127.0.0.1:8000.
 
-### Demo accounts (seeded — change these before going live)
+### Admin account
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@syro.test | Syro@Admin2026 |
-| Customer | customer@syro.test | Syro@Customer2026 |
+Seeding creates the admin **admin@syro.test** with a random password that is printed in the terminal
+(or set `SEED_ADMIN_PASSWORD` in `.env` before seeding). Sign in at `/login`, then change the password
+under *My profile*. Passwords are never stored in this repository.
 
 Demo coupons: `WELCOME10` (10% off over ৳1,000, max ৳500) and `SYRO500` (৳500 off over ৳5,000).
 
