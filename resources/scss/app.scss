@@ -1,0 +1,444 @@
+// =====================================================================
+// SYRO — storefront design system (Bootstrap 5 + brand layer)
+// =====================================================================
+
+// ---- Brand tokens ---------------------------------------------------
+$syro-primary: #111111;
+$syro-white: #FFFFFF;
+$syro-bg: #F7F7F5;
+$syro-accent: #B69A70;
+$syro-text: #222222;
+$syro-muted: #777777;
+$syro-line: #E6E4DF;
+$syro-sale: #A3372B;
+
+// ---- Bootstrap overrides --------------------------------------------
+$primary: $syro-primary;
+$secondary: $syro-muted;
+$success: #2F6B4F;
+$danger: $syro-sale;
+$warning: #C08A2E;
+$info: #4A6A86;
+$light: $syro-bg;
+$dark: $syro-primary;
+
+$body-bg: $syro-bg;
+$body-color: $syro-text;
+$link-color: $syro-primary;
+$link-decoration: none;
+$border-color: $syro-line;
+
+$border-radius: 0;
+$border-radius-sm: 0;
+$border-radius-lg: 0;
+$border-radius-xl: 0;
+$border-radius-pill: 50rem;
+
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+$headings-font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+$headings-font-weight: 500;
+$headings-color: $syro-primary;
+$font-size-base: 0.9375rem;
+
+$btn-padding-y: 0.8rem;
+$btn-padding-x: 1.75rem;
+$btn-font-size: 0.75rem;
+$btn-font-weight: 600;
+$btn-focus-box-shadow: 0 0 0 0.2rem rgba($syro-accent, .35);
+$input-padding-y: 0.75rem;
+$input-padding-x: 1rem;
+$input-bg: $syro-white;
+$input-border-color: $syro-line;
+$input-focus-border-color: $syro-primary;
+$input-focus-box-shadow: none;
+$form-check-input-checked-bg-color: $syro-primary;
+$form-check-input-checked-border-color: $syro-primary;
+$form-check-input-focus-box-shadow: none;
+$card-border-color: $syro-line;
+$card-bg: $syro-white;
+$dropdown-border-color: $syro-line;
+$dropdown-link-active-bg: $syro-primary;
+$pagination-color: $syro-primary;
+$pagination-active-bg: $syro-primary;
+$pagination-active-border-color: $syro-primary;
+$pagination-border-color: $syro-line;
+$pagination-focus-box-shadow: none;
+$nav-link-color: $syro-text;
+$nav-link-hover-color: $syro-primary;
+$offcanvas-horizontal-width: 340px;
+$toast-border-radius: 0;
+$transition-base: all .25s ease;
+
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+    --syro-primary: #{$syro-primary};
+    --syro-bg: #{$syro-bg};
+    --syro-accent: #{$syro-accent};
+    --syro-text: #{$syro-text};
+    --syro-muted: #{$syro-muted};
+    --syro-line: #{$syro-line};
+    --syro-ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+// ---- Base -------------------------------------------------------------
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+::selection { background: $syro-accent; color: $syro-white; }
+img { max-width: 100%; height: auto; }
+a { transition: color .2s ease, opacity .2s ease; }
+.text-muted { color: $syro-muted !important; }
+.text-accent { color: $syro-accent !important; }
+.bg-white { background: $syro-white !important; }
+.border-line { border-color: $syro-line !important; }
+
+.eyebrow {
+    display: inline-block;
+    font-family: $font-family-sans-serif;
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: $syro-accent;
+}
+.section-title {
+    font-size: clamp(1.9rem, 3.4vw, 2.75rem);
+    line-height: 1.1;
+    letter-spacing: -.01em;
+}
+.section { padding: clamp(3.5rem, 7vw, 6.5rem) 0; }
+.link-underline {
+    position: relative;
+    font-size: .72rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+    color: $syro-primary;
+    padding-bottom: 4px;
+    &::after {
+        content: ''; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+        background: currentColor; transform-origin: right; transition: transform .4s var(--syro-ease);
+    }
+    &:hover::after { transform: scaleX(0); }
+}
+
+// ---- Buttons ----------------------------------------------------------
+.btn { letter-spacing: .18em; text-transform: uppercase; transition: all .3s var(--syro-ease); }
+.btn-primary:hover { background: $syro-accent; border-color: $syro-accent; }
+.btn-outline-primary:hover { background: $syro-primary; color: $syro-white; }
+.btn-accent { background: $syro-accent; color: $syro-white; border-color: $syro-accent;
+    &:hover { background: darken($syro-accent, 8%); color: $syro-white; } }
+.btn-light-outline { border: 1px solid rgba($syro-white, .7); color: $syro-white;
+    &:hover { background: $syro-white; color: $syro-primary; } }
+.btn-icon {
+    width: 42px; height: 42px; padding: 0; display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%; letter-spacing: 0;
+}
+
+// ---- Logo -------------------------------------------------------------
+.syro-logo {
+    font-family: $headings-font-family;
+    font-weight: 600;
+    font-size: 1.85rem;
+    letter-spacing: .42em;
+    margin-right: -.42em; // optically centre the tracked word
+    text-transform: uppercase;
+    color: $syro-primary;
+    line-height: 1;
+    text-decoration: none;
+    &:hover { color: $syro-primary; }
+    .dot { color: $syro-accent; }
+}
+
+// ---- Announcement bar & header -----------------------------------------
+.announcement-bar {
+    background: $syro-primary; color: rgba($syro-white, .85);
+    font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+    padding: .6rem 0;
+    a { color: $syro-white; }
+}
+.site-header {
+    background: rgba($syro-white, .96);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid $syro-line;
+    position: sticky; top: 0; z-index: 1030;
+    transition: box-shadow .3s ease;
+    &.is-scrolled { box-shadow: 0 8px 30px rgba(0,0,0,.05); }
+    .header-inner { height: 78px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+}
+.main-nav {
+    gap: 2rem;
+    > .nav-item > .nav-link {
+        font-size: .72rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+        padding: 1.75rem 0; position: relative;
+        &::after {
+            content: ''; position: absolute; left: 0; right: 0; bottom: 1.35rem; height: 1px;
+            background: $syro-primary; transform: scaleX(0); transition: transform .35s var(--syro-ease);
+        }
+        &:hover::after, &.active::after { transform: scaleX(1); }
+    }
+    .nav-item.has-mega { position: static; }
+    .nav-item.has-mega:hover .mega-menu, .nav-item.has-mega:focus-within .mega-menu {
+        opacity: 1; visibility: visible; transform: translateY(0);
+    }
+}
+.mega-menu {
+    position: absolute; left: 0; right: 0; top: 100%;
+    background: $syro-white; border-top: 1px solid $syro-line; border-bottom: 1px solid $syro-line;
+    padding: 2.5rem 0; opacity: 0; visibility: hidden; transform: translateY(8px);
+    transition: all .3s var(--syro-ease);
+    h6 { font-family: $font-family-sans-serif; font-size: .7rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 1rem; }
+    a { display: block; color: $syro-muted; font-size: .9rem; padding: .3rem 0; &:hover { color: $syro-primary; padding-left: 4px; } }
+}
+.header-icons {
+    gap: .35rem;
+    .icon-link {
+        position: relative; width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center;
+        color: $syro-primary; font-size: 1.15rem; border: 0; background: none; border-radius: 50%;
+        &:hover { background: $syro-bg; }
+    }
+    .badge-count {
+        position: absolute; top: 4px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px;
+        border-radius: 9px; background: $syro-accent; color: $syro-white;
+        font-size: .62rem; font-weight: 600; line-height: 18px; text-align: center;
+        &:empty, &[data-count="0"] { display: none; }
+    }
+}
+
+// Search overlay
+.search-overlay {
+    position: fixed; inset: 0; z-index: 1060; background: rgba($syro-white, .98);
+    display: flex; flex-direction: column; padding-top: 12vh;
+    opacity: 0; visibility: hidden; transition: all .3s var(--syro-ease);
+    &.open { opacity: 1; visibility: visible; }
+    .search-input {
+        border: 0; border-bottom: 1px solid $syro-primary; background: transparent;
+        font-family: $headings-font-family; font-size: clamp(1.75rem, 4vw, 3rem); padding: .5rem 0; width: 100%;
+        &:focus { outline: none; }
+    }
+    .search-results a { display: flex; gap: 1rem; align-items: center; padding: .75rem 0; border-bottom: 1px solid $syro-line; color: $syro-text;
+        img { width: 56px; height: 70px; object-fit: cover; background: $syro-bg; } &:hover { color: $syro-accent; } }
+}
+
+// ---- Hero ---------------------------------------------------------------
+.hero { position: relative; background: $syro-primary; color: $syro-white; overflow: hidden; }
+.hero .carousel-item { height: clamp(520px, 82vh, 820px); }
+.hero-slide {
+    position: relative; height: 100%; display: flex; align-items: center;
+    background-size: cover; background-position: center;
+    &::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 60%, rgba(0,0,0,0) 100%); }
+    .container { position: relative; z-index: 2; }
+    .eyebrow { color: lighten($syro-accent, 12%); }
+    h1, h2 { color: $syro-white; font-size: clamp(2.6rem, 6.5vw, 5.5rem); line-height: 1; font-weight: 500; letter-spacing: -.02em; max-width: 12ch; }
+    p { color: rgba($syro-white, .85); max-width: 42ch; font-size: 1.05rem; }
+}
+.hero .carousel-item.active .hero-anim { animation: heroUp .9s var(--syro-ease) both; }
+.hero .carousel-item.active .hero-anim:nth-child(2) { animation-delay: .12s; }
+.hero .carousel-item.active .hero-anim:nth-child(3) { animation-delay: .24s; }
+.hero .carousel-item.active .hero-anim:nth-child(4) { animation-delay: .36s; }
+@keyframes heroUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.hero .carousel-indicators [data-bs-target] { width: 36px; height: 2px; }
+
+// ---- Category tiles & promo banners ------------------------------------
+.category-tile {
+    position: relative; display: block; overflow: hidden; aspect-ratio: 3 / 4; background: #e9e6e0;
+    img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--syro-ease); }
+    &::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.5), rgba(0,0,0,0) 55%); }
+    .tile-caption { position: absolute; left: 1.5rem; right: 1.5rem; bottom: 1.5rem; z-index: 2; color: $syro-white;
+        h3 { color: $syro-white; font-size: 1.8rem; margin: 0; } span { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; opacity: .85; } }
+    &:hover img { transform: scale(1.06); }
+}
+.promo-banner {
+    position: relative; display: flex; align-items: flex-end; min-height: 420px; overflow: hidden; color: $syro-white;
+    background-size: cover; background-position: center; padding: 2.5rem;
+    &::before { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.55), rgba(0,0,0,.05)); transition: background .4s; }
+    > * { position: relative; }
+    h3 { color: $syro-white; font-size: clamp(1.8rem, 3vw, 2.6rem); }
+    &:hover::before { background: linear-gradient(0deg, rgba(0,0,0,.65), rgba(0,0,0,.15)); }
+}
+
+// ---- Product card -------------------------------------------------------
+.product-card {
+    position: relative;
+    .product-media {
+        position: relative; display: block; overflow: hidden; aspect-ratio: 4 / 5; background: #EDEBE6;
+        img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .6s var(--syro-ease), transform 1.2s var(--syro-ease); }
+        .img-hover { opacity: 0; }
+    }
+    &:hover .product-media .img-hover { opacity: 1; }
+    &:hover .product-media img:first-child { transform: scale(1.04); }
+    .product-badges { position: absolute; top: .9rem; left: .9rem; z-index: 3; display: flex; flex-direction: column; gap: .35rem; }
+    .badge-syro { font-size: .6rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; padding: .35rem .6rem; background: $syro-white; color: $syro-primary;
+        &.sale { background: $syro-sale; color: $syro-white; } &.soldout { background: $syro-primary; color: $syro-white; } }
+    .product-actions {
+        position: absolute; left: .9rem; right: .9rem; bottom: .9rem; z-index: 3;
+        display: flex; gap: .5rem; opacity: 0; transform: translateY(10px); transition: all .35s var(--syro-ease);
+        .btn { flex: 1; padding: .7rem .5rem; font-size: .65rem; background: rgba($syro-white, .95); border: 0; color: $syro-primary;
+            &:hover { background: $syro-primary; color: $syro-white; } }
+    }
+    &:hover .product-actions { opacity: 1; transform: none; }
+    .wishlist-btn {
+        position: absolute; top: .75rem; right: .75rem; z-index: 3; width: 38px; height: 38px; border-radius: 50%;
+        border: 0; background: rgba($syro-white, .92); color: $syro-primary; display: inline-flex; align-items: center; justify-content: center;
+        transition: transform .2s ease; &:hover { transform: scale(1.08); } &.active { color: $syro-sale; }
+    }
+    .product-info { padding-top: 1rem; }
+    .product-brand { font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: $syro-muted; }
+    .product-name { font-family: $font-family-sans-serif; font-size: .92rem; font-weight: 500; margin: .3rem 0 .35rem; line-height: 1.35;
+        a { color: $syro-text; &:hover { color: $syro-accent; } } }
+    @media (hover: none) { .product-actions { opacity: 1; transform: none; } }
+}
+.price { font-weight: 600; color: $syro-primary; letter-spacing: .02em;
+    .price-old { color: $syro-muted; text-decoration: line-through; font-weight: 400; margin-left: .45rem; font-size: .9em; }
+    .price-sale { color: $syro-sale; } }
+.stars { color: $syro-accent; font-size: .75rem; letter-spacing: 1px; }
+
+// ---- Shop ---------------------------------------------------------------
+.page-hero { background: $syro-white; border-bottom: 1px solid $syro-line; padding: 3rem 0 2.5rem;
+    h1 { font-size: clamp(2.2rem, 4vw, 3.4rem); margin: .5rem 0 0; } }
+.breadcrumb { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; margin: 0;
+    a { color: $syro-muted; &:hover { color: $syro-primary; } } }
+.filter-sidebar {
+    .filter-group { border-bottom: 1px solid $syro-line; padding: 1.25rem 0; }
+    .filter-title { font-size: .7rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; margin-bottom: .9rem; display: flex; justify-content: space-between; }
+    .form-check { margin-bottom: .45rem; font-size: .88rem; }
+    .size-option input, .color-option input { display: none; }
+    .size-option span { display: inline-block; min-width: 44px; padding: .45rem .6rem; text-align: center; border: 1px solid $syro-line; background: $syro-white; font-size: .75rem; cursor: pointer; transition: all .2s; }
+    .size-option input:checked + span { background: $syro-primary; color: $syro-white; border-color: $syro-primary; }
+    .color-option span { display: inline-block; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(0,0,0,.12); cursor: pointer; box-shadow: 0 0 0 3px $syro-white; transition: box-shadow .2s; }
+    .color-option input:checked + span { box-shadow: 0 0 0 2px $syro-white, 0 0 0 3px $syro-primary; }
+}
+.shop-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-bottom: 1.25rem; border-bottom: 1px solid $syro-line; margin-bottom: 2rem;
+    .form-select { width: auto; font-size: .8rem; padding-top: .55rem; padding-bottom: .55rem; } }
+#product-grid { transition: opacity .25s ease; &.loading { opacity: .35; pointer-events: none; } }
+
+// ---- Product detail -----------------------------------------------------
+.gallery-main { position: relative; aspect-ratio: 4 / 5; background: #EDEBE6; overflow: hidden; cursor: zoom-in;
+    img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--syro-ease); }
+    &.zoomed img { transform: scale(1.8); cursor: zoom-out; } }
+.gallery-thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .6rem; margin-top: .6rem;
+    button { border: 1px solid transparent; padding: 0; background: #EDEBE6; aspect-ratio: 4 / 5; overflow: hidden; opacity: .6; transition: all .2s;
+        img { width: 100%; height: 100%; object-fit: cover; } &.active, &:hover { opacity: 1; border-color: $syro-primary; } } }
+.product-summary {
+    h1 { font-size: clamp(2rem, 3.4vw, 2.8rem); line-height: 1.1; }
+    .price { font-size: 1.35rem; }
+    .option-label { font-size: .7rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; margin-bottom: .6rem; }
+    .size-swatch { min-width: 52px; padding: .65rem .75rem; border: 1px solid $syro-line; background: $syro-white; font-size: .8rem; transition: all .2s;
+        &:hover { border-color: $syro-primary; } &.active { background: $syro-primary; color: $syro-white; border-color: $syro-primary; }
+        &.unavailable { color: #bbb; text-decoration: line-through; } }
+    .color-swatch { width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(0,0,0,.12); box-shadow: 0 0 0 3px $syro-white; transition: box-shadow .2s;
+        &.active { box-shadow: 0 0 0 2px $syro-white, 0 0 0 3px $syro-primary; } }
+    .qty-input { width: 130px; }
+    .meta-list { font-size: .85rem; color: $syro-muted; li { padding: .2rem 0; } strong { color: $syro-text; font-weight: 500; } }
+}
+.qty-input { display: inline-flex; align-items: stretch; border: 1px solid $syro-line; background: $syro-white;
+    button { border: 0; background: none; width: 40px; font-size: 1rem; &:hover { background: $syro-bg; } }
+    input { border: 0; width: 100%; text-align: center; font-weight: 500; -moz-appearance: textfield; &:focus { outline: none; }
+        &::-webkit-outer-spin-button, &::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; } } }
+.trust-list { border-top: 1px solid $syro-line; border-bottom: 1px solid $syro-line; padding: 1.25rem 0; font-size: .82rem;
+    i { color: $syro-accent; font-size: 1.1rem; } }
+.nav-tabs-syro { border-bottom: 1px solid $syro-line; gap: 2rem;
+    .nav-link { border: 0; padding: 1rem 0; font-size: .72rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: $syro-muted; border-bottom: 1px solid transparent; margin-bottom: -1px;
+        &.active { color: $syro-primary; border-bottom-color: $syro-primary; background: none; } } }
+.rating-bar { height: 4px; background: $syro-line; .fill { height: 100%; background: $syro-accent; } }
+
+// ---- Cart / checkout ----------------------------------------------------
+.panel { background: $syro-white; border: 1px solid $syro-line; padding: clamp(1.25rem, 3vw, 2rem); }
+.panel-title { font-family: $font-family-sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 1.25rem; }
+.cart-line { display: grid; grid-template-columns: 96px 1fr auto; gap: 1.25rem; padding: 1.5rem 0; border-bottom: 1px solid $syro-line;
+    .thumb { aspect-ratio: 4 / 5; background: #EDEBE6; overflow: hidden; img { width: 100%; height: 100%; object-fit: cover; } } }
+.summary-row { display: flex; justify-content: space-between; padding: .5rem 0; font-size: .92rem;
+    &.total { border-top: 1px solid $syro-line; margin-top: .75rem; padding-top: 1rem; font-size: 1.1rem; font-weight: 600; } }
+.choice-card { display: block; border: 1px solid $syro-line; background: $syro-white; padding: 1rem 1.15rem; cursor: pointer; transition: border-color .2s;
+    input { margin-right: .6rem; } &:has(input:checked) { border-color: $syro-primary; box-shadow: inset 0 0 0 1px $syro-primary; } }
+.checkout-steps { display: flex; gap: 1.5rem; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: $syro-muted;
+    .active { color: $syro-primary; font-weight: 600; } }
+
+// ---- Account ------------------------------------------------------------
+.account-nav { a { display: flex; align-items: center; gap: .75rem; padding: .85rem 1rem; color: $syro-text; border-left: 2px solid transparent; font-size: .9rem;
+    &:hover { background: $syro-bg; } &.active { border-left-color: $syro-primary; background: $syro-bg; font-weight: 500; } } }
+.stat-card { background: $syro-white; border: 1px solid $syro-line; padding: 1.5rem;
+    .stat-value { font-family: $headings-font-family; font-size: 2.2rem; line-height: 1; color: $syro-primary; }
+    .stat-label { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: $syro-muted; } }
+.timeline { list-style: none; padding: 0; margin: 0; position: relative;
+    &::before { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 1px; background: $syro-line; }
+    li { position: relative; padding-left: 2rem; padding-bottom: 1.25rem;
+        &::before { content: ''; position: absolute; left: 0; top: 4px; width: 15px; height: 15px; border-radius: 50%; background: $syro-white; border: 2px solid $syro-accent; }
+        &:first-child::before { background: $syro-accent; } } }
+.order-progress { display: flex; justify-content: space-between; position: relative; margin: 1.5rem 0 2rem;
+    &::before { content: ''; position: absolute; top: 14px; left: 0; right: 0; height: 2px; background: $syro-line; }
+    .step { position: relative; z-index: 1; text-align: center; flex: 1; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: $syro-muted;
+        .dot { width: 30px; height: 30px; border-radius: 50%; margin: 0 auto .5rem; background: $syro-white; border: 2px solid $syro-line; display: flex; align-items: center; justify-content: center; }
+        &.done { color: $syro-primary; .dot { background: $syro-primary; border-color: $syro-primary; color: $syro-white; } } } }
+
+// ---- Newsletter & footer ------------------------------------------------
+.newsletter { background: $syro-white; border-top: 1px solid $syro-line;
+    .form-control { border: 0; border-bottom: 1px solid $syro-primary; background: transparent; padding-left: 0; } }
+.site-footer { background: $syro-primary; color: rgba($syro-white, .65); font-size: .88rem; padding-top: 4.5rem;
+    h6 { color: $syro-white; font-family: $font-family-sans-serif; font-size: .7rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; margin-bottom: 1.25rem; }
+    a { color: rgba($syro-white, .65); &:hover { color: $syro-white; } }
+    ul li { padding: .3rem 0; }
+    .syro-logo { color: $syro-white; }
+    .social a { width: 38px; height: 38px; border: 1px solid rgba($syro-white, .25); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; &:hover { background: $syro-white; color: $syro-primary; } }
+    .footer-bottom { border-top: 1px solid rgba($syro-white, .12); margin-top: 3.5rem; padding: 1.5rem 0; font-size: .75rem; }
+    .pay-chip { border: 1px solid rgba($syro-white, .25); padding: .25rem .6rem; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
+}
+.features-strip { background: $syro-white; border-top: 1px solid $syro-line; border-bottom: 1px solid $syro-line;
+    .feature { display: flex; gap: 1rem; align-items: center; padding: 1.75rem 0; i { font-size: 1.6rem; color: $syro-accent; }
+        strong { display: block; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; } span { font-size: .82rem; color: $syro-muted; } } }
+
+// ---- Toasts / misc -------------------------------------------------------
+.toast-syro { background: $syro-primary; color: $syro-white; border: 0; min-width: 300px; font-size: .88rem;
+    .btn-close { filter: invert(1); } &.error { background: $syro-sale; } }
+.empty-state { text-align: center; padding: 5rem 1rem; i { font-size: 3rem; color: $syro-accent; } }
+.auth-wrap { min-height: 70vh; display: flex; align-items: center; padding: 4rem 0; }
+.auth-card { background: $syro-white; border: 1px solid $syro-line; padding: clamp(1.75rem, 4vw, 3rem); max-width: 460px; margin: 0 auto; width: 100%; }
+.form-label { font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: $syro-text; }
+.prose p { line-height: 1.8; color: #444; }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s var(--syro-ease), transform .9s var(--syro-ease);
+    &.is-visible { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } * { animation: none !important; } }
+
+// ---- Admin panel -----------------------------------------------------------
+.admin-body { background: #F4F3F0; font-size: .9rem; }
+.admin-sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0; width: 248px; background: $syro-primary; color: rgba($syro-white, .7);
+    overflow-y: auto; z-index: 1040; transition: transform .3s var(--syro-ease);
+    .syro-logo { color: $syro-white; font-size: 1.5rem; }
+    .nav-section { font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; color: rgba($syro-white, .35); padding: 1.25rem 1.5rem .5rem; }
+    a.nav-item-link { display: flex; align-items: center; gap: .8rem; padding: .62rem 1.5rem; color: rgba($syro-white, .72); font-size: .86rem; border-left: 2px solid transparent;
+        i { font-size: 1rem; width: 18px; } &:hover { color: $syro-white; background: rgba($syro-white, .05); }
+        &.active { color: $syro-white; border-left-color: $syro-accent; background: rgba($syro-white, .07); }
+        .badge { margin-left: auto; background: $syro-accent; } }
+}
+.admin-main { margin-left: 248px; min-height: 100vh; }
+.admin-topbar { background: $syro-white; border-bottom: 1px solid $syro-line; height: 64px; display: flex; align-items: center; padding: 0 1.75rem; position: sticky; top: 0; z-index: 1030; }
+.admin-content { padding: 1.75rem; }
+.admin-card { background: $syro-white; border: 1px solid $syro-line; }
+.admin-card .card-head { padding: 1rem 1.25rem; border-bottom: 1px solid $syro-line; display: flex; justify-content: space-between; align-items: center;
+    h2, h3 { font-family: $font-family-sans-serif; font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; margin: 0; } }
+.admin-card .card-pad { padding: 1.25rem; }
+.admin-kpi { background: $syro-white; border: 1px solid $syro-line; padding: 1.25rem;
+    .kpi-label { font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; color: $syro-muted; }
+    .kpi-value { font-size: 1.6rem; font-weight: 600; color: $syro-primary; margin-top: .35rem; }
+    i { font-size: 1.4rem; color: $syro-accent; } }
+.admin-table { margin: 0; font-size: .86rem;
+    th { font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: $syro-muted; font-weight: 600; background: #FAFAF8; white-space: nowrap; }
+    td, th { padding: .8rem 1rem; vertical-align: middle; } }
+.admin-thumb { width: 44px; height: 55px; object-fit: cover; background: $syro-bg; margin-right: .35rem; }
+.admin-page-title { font-family: $font-family-sans-serif; font-size: 1.35rem; font-weight: 600; margin: 0; }
+.admin-body .btn { padding: .55rem 1.1rem; font-size: .68rem; }
+.admin-body .btn-sm { padding: .35rem .7rem; font-size: .62rem; }
+.admin-body .form-control, .admin-body .form-select { padding: .55rem .8rem; font-size: .88rem; }
+@include media-breakpoint-down(lg) {
+    .admin-sidebar { transform: translateX(-100%); &.open { transform: none; } }
+    .admin-main { margin-left: 0; }
+}
+@media print {
+    .admin-sidebar, .admin-topbar, .no-print { display: none !important; }
+    .admin-main { margin: 0; } .admin-body { background: #fff; }
+}
+
+// ---- Responsive -----------------------------------------------------------
+@include media-breakpoint-down(lg) {
+    .site-header .header-inner { height: 64px; grid-template-columns: auto 1fr auto; }
+    .site-header .syro-logo { font-size: 1.45rem; justify-self: center; }
+    .cart-line { grid-template-columns: 80px 1fr; .line-total { grid-column: 2; } }
+}
