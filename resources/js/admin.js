@@ -73,5 +73,29 @@ document.addEventListener('change', (e) => {
     });
 });
 
+// Product list: select all + selected counter + bulk confirmation.
+const selectAll = document.querySelector('[data-select-all]');
+const rowChecks = () => Array.from(document.querySelectorAll('[data-row-check]'));
+const updateCount = () => {
+    const n = rowChecks().filter((c) => c.checked).length;
+    document.querySelectorAll('[data-selected-count]').forEach((el) => { el.textContent = n; });
+};
+if (selectAll) {
+    selectAll.addEventListener('change', () => { rowChecks().forEach((c) => { c.checked = selectAll.checked; }); updateCount(); });
+    document.addEventListener('change', (e) => { if (e.target.matches('[data-row-check]')) updateCount(); });
+}
+const bulkForm = document.querySelector('[data-confirm-bulk]');
+if (bulkForm) {
+    bulkForm.addEventListener('submit', (e) => {
+        const n = rowChecks().filter((c) => c.checked).length;
+        const action = bulkForm.querySelector('[name="action"]');
+        const pct = bulkForm.querySelector('[name="percent"]').value;
+        if (!n) { e.preventDefault(); window.alert('Select at least one product first.'); return; }
+        if (['increase', 'decrease', 'sale'].includes(action.value) && !pct) { e.preventDefault(); window.alert('Enter a percentage for this action.'); return; }
+        const label = action.options[action.selectedIndex].text.replace('%', pct ? `${pct}%` : '%');
+        if (!window.confirm(`${label} — apply to ${n} product(s)?`)) e.preventDefault();
+    });
+}
+
 // Server flash messages.
 document.querySelectorAll('.toast').forEach((el) => new bootstrap.Toast(el, { delay: 4000 }).show());

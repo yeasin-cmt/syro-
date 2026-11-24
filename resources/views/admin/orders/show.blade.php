@@ -11,6 +11,10 @@
     <div class="d-flex gap-2">
         <a href="{{ route('admin.orders.invoice', $order) }}" target="_blank" class="btn btn-outline-primary"><i class="bi bi-printer me-1"></i>Invoice</a>
         <a href="{{ route('admin.orders.index') }}" class="btn btn-light">Back to orders</a>
+        <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" data-confirm="Delete order {{ $order->order_number }} permanently? Stock will be returned to inventory.">
+            @csrf @method('DELETE')
+            <button class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete</button>
+        </form>
     </div>
 </div>
 

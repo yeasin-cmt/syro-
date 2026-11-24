@@ -42,7 +42,12 @@
                         <div class="d-flex flex-wrap gap-3 mb-3">
                             @foreach ($product->images as $img)
                                 <div class="text-center">
-                                    <img src="{{ $img->url }}" alt="" style="width:90px;height:112px;object-fit:cover" class="d-block mb-1">
+                                    <img src="{{ $img->url }}" alt="" style="width:90px;height:112px;object-fit:cover" class="d-block mb-1 {{ $loop->first ? 'border border-2 border-dark' : '' }}">
+                                    @if ($loop->first)
+                                        <div class="small fw-semibold">Main</div>
+                                    @else
+                                        <button type="submit" form="main-image-{{ $img->id }}" class="btn btn-sm btn-link p-0 d-block mx-auto">Make main</button>
+                                    @endif
                                     <button type="submit" form="delete-image-{{ $img->id }}" class="btn btn-sm btn-link text-danger p-0">Remove</button>
                                 </div>
                             @endforeach
@@ -137,6 +142,22 @@
         <form id="delete-image-{{ $img->id }}" action="{{ route('admin.products.images.destroy', [$product, $img]) }}" method="POST" data-confirm="Remove this image?">
             @csrf @method('DELETE')
         </form>
+        <form id="main-image-{{ $img->id }}" action="{{ route('admin.products.images.main', [$product, $img]) }}" method="POST">
+            @csrf @method('PATCH')
+        </form>
     @endforeach
+
+    <div class="admin-card mt-3" style="max-width: 100%">
+        <div class="card-head"><h2>More actions</h2></div>
+        <div class="card-pad d-flex flex-wrap gap-2">
+            <form action="{{ route('admin.products.duplicate', $product) }}" method="POST">@csrf
+                <button class="btn btn-outline-primary"><i class="bi bi-copy me-1"></i>Duplicate product</button>
+            </form>
+            <form action="{{ route('admin.products.destroy', $product) }}" method="POST" data-confirm="Move “{{ $product->name }}” to trash? You can restore it from the trash later.">
+                @csrf @method('DELETE')
+                <button class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete product</button>
+            </form>
+        </div>
+    </div>
 @endif
 @endsection

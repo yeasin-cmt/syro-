@@ -31,6 +31,7 @@ class ProductController extends Controller
         return view('admin.products.index', [
             'products' => $products,
             'categories' => Category::orderBy('name')->get(),
+            'trashCount' => Product::onlyTrashed()->count(),
         ]);
     }
 
@@ -96,6 +97,174 @@ class ProductController extends Controller
         $image->delete();
 
         return back()->with('success', 'Image removed.');
+    }
+
+    /**
+     * Make an image the main (first) image of the product.
+     */
+    public function makeMainImage(Product $product, ProductImage $image)
+    {
+        abort_unless($image->product_id === $product->id, 404);
+
+        DB::transaction(function () use ($product, $image) {
+            $order = 1;
+            foreach ($product->images()->get() as $img) {
+                $img->update(['sort_order' => $img->is($image) ? 0 : $order++]);
+            }
+        });
+
+        return back()->with('success', 'Main image updated.');
+    }
+
+    /**
+     * Inline edit from the product list: price, sale price, stock and visibility.
+     */
+    public function quickUpdate(Request $request, Product $product)
+    {
+        $data = $request->validate([
+            'price' => ['required', 'numeric', 'min:0', 'max:9999999'],
+            'sale_price' => ['nullable', 'numeric', 'min:0', 'lt:price'],
+            'stock' => ['nullable', 'integer', 'min:0'],
+            'is_active' => ['nullable', 'boolean'],
+        ], ['sale_price.lt' => 'Sale price must be lower than the price.']);
+
+        $product->price = $data['price'];
+        $product->sale_price = $data['sale_price'] ?? null;
+        $product->is_active = $request->boolean('is_active');
+        // Stock of products with variants is the sum of their variants, so it is not edited here.
+        if (! $product->variants()->exists() && isset($data['stock'])) {
+            $product->stock = $data['stock'];
+        }
+        $product->save();
+
+        return back()->with('success', "“{$product->name}” updated.");
+    }
+
+    /**
+     * Bulk actions on selected products.
+     */
+    public function bulk(Request $request)
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer'],
+            'action' => ['required', Rule::in(['activate', 'deactivate', 'feature', 'unfeature', 'delete', 'increase', 'decrease', 'sale', 'clear_sale'])],
+            'percent' => ['required_if:action,increase,decrease,sale', 'nullable', 'numeric', 'min:1', 'max:90'],
+        ], [
+            'ids.required' => 'Select at least one product first.',
+            'percent.required_if' => 'Enter a percentage for this action.',
+        ]);
+
+        $products = Product::with('variants')->whereIn('id', $data['ids'])->get();
+        $pct = (float) ($data['percent'] ?? 0) / 100;
+
+        DB::transaction(function () use ($products, $data, $pct) {
+            foreach ($products as $p) {
+                switch ($data['action']) {
+                    case 'activate': $p->update(['is_active' => true]); break;
+                    case 'deactivate': $p->update(['is_active' => false]); break;
+                    case 'feature': $p->update(['is_featured' => true]); break;
+                    case 'unfeature': $p->update(['is_featured' => false]); break;
+                    case 'delete':
+                        $p->update(['is_active' => false]);
+                        $p->delete();
+                        break;
+                    case 'increase':
+                    case 'decrease':
+                        $factor = $data['action'] === 'increase' ? 1 + $pct : 1 - $pct;
+                        $newPrice = max(1, round((float) $p->price * $factor));
+                        $newSale = $p->sale_price !== null ? round((float) $p->sale_price * $factor) : null;
+                        $p->update(['price' => $newPrice, 'sale_price' => $newSale !== null && $newSale < $newPrice ? $newSale : null]);
+                        foreach ($p->variants as $v) {
+                            if ($v->price !== null) {
+                                $v->update(['price' => max(1, round((float) $v->price * $factor))]);
+                            }
+                        }
+                        break;
+                    case 'sale':
+                        $p->update(['sale_price' => max(1, round((float) $p->price * (1 - $pct)))]);
+                        break;
+                    case 'clear_sale':
+                        $p->update(['sale_price' => null]);
+                        break;
+                }
+            }
+        });
+
+        $labels = [
+            'activate' => 'shown in store', 'deactivate' => 'hidden', 'feature' => 'featured', 'unfeature' => 'unfeatured',
+            'delete' => 'moved to trash', 'increase' => 'price increased', 'decrease' => 'price decreased',
+            'sale' => 'put on sale', 'clear_sale' => 'removed from sale',
+        ];
+
+        return back()->with('success', $products->count().' product(s) '.$labels[$data['action']].'.');
+    }
+
+    public function duplicate(Product $product)
+    {
+        $copy = DB::transaction(function () use ($product) {
+            $copy = $product->replicate(['slug', 'sku', 'sold_count', 'views']);
+            $copy->name = $product->name.' (Copy)';
+            $copy->slug = $this->uniqueSlug(Product::class, $copy->name);
+            $sku = $product->sku.'-COPY';
+            $n = 2;
+            while (Product::withTrashed()->where('sku', $sku)->exists()) {
+                $sku = $product->sku.'-COPY'.$n++;
+            }
+            $copy->sku = $sku;
+            $copy->is_active = false; // review before publishing
+            $copy->sold_count = 0;
+            $copy->views = 0;
+            $copy->save();
+
+            foreach ($product->variants as $v) {
+                $copy->variants()->create($v->only(['size', 'color', 'color_hex', 'stock', 'price']) + ['sku' => $v->sku ? $v->sku.'-C' : null]);
+            }
+            foreach ($product->images as $img) {
+                $path = $img->path;
+                if (! str_starts_with($path, 'http') && Storage::disk('public')->exists($path)) {
+                    $newPath = 'products/'.uniqid().'-'.basename($path);
+                    Storage::disk('public')->copy($path, $newPath);
+                    $path = $newPath;
+                }
+                $copy->images()->create(['path' => $path, 'alt' => $img->alt, 'sort_order' => $img->sort_order]);
+            }
+
+            return $copy;
+        });
+
+        return redirect()->route('admin.products.edit', $copy)->with('success', 'Product duplicated. It is hidden until you make it visible.');
+    }
+
+    /* ---------------- Trash ---------------- */
+
+    public function trash()
+    {
+        return view('admin.products.trash', [
+            'products' => Product::onlyTrashed()->with(['images', 'category'])->latest('deleted_at')->paginate(20),
+        ]);
+    }
+
+    public function restore(int $id)
+    {
+        $product = Product::onlyTrashed()->findOrFail($id);
+        $product->restore();
+
+        return back()->with('success', "“{$product->name}” restored. It is hidden — make it visible when ready.");
+    }
+
+    public function forceDelete(int $id)
+    {
+        $product = Product::onlyTrashed()->with('images')->findOrFail($id);
+
+        foreach ($product->images as $img) {
+            if (! str_starts_with($img->path, 'http')) {
+                Storage::disk('public')->delete($img->path);
+            }
+        }
+        $product->forceDelete(); // order history keeps the product name and price
+
+        return back()->with('success', "“{$product->name}” permanently deleted.");
     }
 
     /* ---------------------------------------------------------------- */

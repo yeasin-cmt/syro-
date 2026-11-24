@@ -68,6 +68,21 @@ class OrderController extends Controller
         return back()->with('success', 'Payment status updated.');
     }
 
+    /**
+     * Delete an order (e.g. a test or spam order). Stock is returned unless it was already restored.
+     */
+    public function destroy(Order $order)
+    {
+        \Illuminate\Support\Facades\DB::transaction(function () use ($order) {
+            if (! in_array($order->status, Order::RESTOCKED_STATUSES, true)) {
+                $order->transitionTo('cancelled', 'Order deleted by admin.');
+            }
+            $order->delete();
+        });
+
+        return redirect()->route('admin.orders.index')->with('success', "Order {$order->order_number} deleted and stock restored.");
+    }
+
     public function invoice(Order $order)
     {
         return view('admin.orders.invoice', ['order' => $order->load('items')]);

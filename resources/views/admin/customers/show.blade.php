@@ -12,13 +12,21 @@
                 <p class="mb-1"><a href="mailto:{{ $customer->email }}">{{ $customer->email }}</a></p>
                 <p class="mb-1">{{ $customer->phone ?: 'No phone' }}</p>
                 <p class="text-muted">{{ $customer->address }} {{ $customer->city }}</p>
-                <p class="text-muted mb-3">Joined {{ $customer->created_at->format('d M Y') }}</p>
-                @unless ($customer->isAdmin())
-                    <form action="{{ route('admin.customers.toggle', $customer) }}" method="POST" data-confirm="{{ $customer->is_active ? 'Deactivate this account? They will not be able to sign in.' : 'Re-activate this account?' }}">
-                        @csrf @method('PATCH')
-                        <button class="btn btn-sm {{ $customer->is_active ? 'btn-outline-danger' : 'btn-outline-success' }}">{{ $customer->is_active ? 'Deactivate account' : 'Activate account' }}</button>
-                    </form>
-                @endunless
+                <p class="text-muted mb-1">Joined {{ $customer->created_at->format('d M Y') }}</p>
+                <p class="mb-3"><span class="badge {{ $customer->isAdmin() ? 'text-bg-dark' : 'text-bg-light' }}">{{ $customer->isAdmin() ? 'Administrator' : 'Customer' }}</span></p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ route('admin.customers.edit', $customer) }}" class="btn btn-sm btn-primary"><i class="bi bi-pencil me-1"></i>Edit / reset password</a>
+                    @if ($customer->id !== auth()->id())
+                        <form action="{{ route('admin.customers.toggle', $customer) }}" method="POST" data-confirm="{{ $customer->is_active ? 'Deactivate this account? They will not be able to sign in.' : 'Re-activate this account?' }}">
+                            @csrf @method('PATCH')
+                            <button class="btn btn-sm {{ $customer->is_active ? 'btn-outline-warning' : 'btn-outline-success' }}">{{ $customer->is_active ? 'Deactivate' : 'Activate' }}</button>
+                        </form>
+                        <form action="{{ route('admin.customers.destroy', $customer) }}" method="POST" data-confirm="Delete this account permanently? Their orders will be kept.">
+                            @csrf @method('DELETE')
+                            <button class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', $product->meta_title ?: $product->name)
-@section('meta_description', $product->meta_description ?: $product->short_description)
+@section('meta_description', (string) ($product->meta_description ?: $product->short_description ?: $product->name))
 
 @push('head')
     <meta property="og:title" content="{{ $product->name }}">

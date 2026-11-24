@@ -30,17 +30,21 @@
         <a href="{{ route('admin.orders.index') }}" class="nav-item-link {{ $link('', 'admin.orders.*') }}"><i class="bi bi-receipt"></i> Orders @if ($pendingOrders)<span class="badge">{{ $pendingOrders }}</span>@endif</a>
 
         <div class="nav-section">Catalogue</div>
-        <a href="{{ route('admin.products.index') }}" class="nav-item-link {{ $link('', 'admin.products.*') }}"><i class="bi bi-box-seam"></i> Products</a>
+        <a href="{{ route('admin.products.index') }}" class="nav-item-link {{ request()->routeIs('admin.products.*') && ! request()->routeIs('admin.products.trash') ? 'active' : '' }}"><i class="bi bi-box-seam"></i> Products</a>
+        <a href="{{ route('admin.products.create') }}" class="nav-item-link ps-5 {{ $link('admin.products.create') }}" style="font-size:.8rem"><i class="bi bi-plus-lg"></i> Add product</a>
+        <a href="{{ route('admin.products.trash') }}" class="nav-item-link ps-5 {{ $link('admin.products.trash') }}" style="font-size:.8rem"><i class="bi bi-trash3"></i> Trash</a>
         <a href="{{ route('admin.categories.index') }}" class="nav-item-link {{ $link('', 'admin.categories.*') }}"><i class="bi bi-diagram-3"></i> Categories</a>
         <a href="{{ route('admin.brands.index') }}" class="nav-item-link {{ $link('', 'admin.brands.*') }}"><i class="bi bi-award"></i> Brands</a>
         <a href="{{ route('admin.reviews.index') }}" class="nav-item-link {{ $link('', 'admin.reviews.*') }}"><i class="bi bi-star"></i> Reviews @if ($pendingReviews)<span class="badge">{{ $pendingReviews }}</span>@endif</a>
 
         <div class="nav-section">Customers &amp; marketing</div>
-        <a href="{{ route('admin.customers.index') }}" class="nav-item-link {{ $link('', 'admin.customers.*') }}"><i class="bi bi-people"></i> Customers</a>
+        <a href="{{ route('admin.customers.index') }}" class="nav-item-link {{ $link('', 'admin.customers.*') }}"><i class="bi bi-people"></i> Users</a>
         <a href="{{ route('admin.coupons.index') }}" class="nav-item-link {{ $link('', 'admin.coupons.*') }}"><i class="bi bi-ticket-perforated"></i> Coupons</a>
         <a href="{{ route('admin.banners.index') }}" class="nav-item-link {{ $link('', 'admin.banners.*') }}"><i class="bi bi-images"></i> Banners</a>
         <a href="{{ route('admin.subscribers.index') }}" class="nav-item-link {{ $link('', 'admin.subscribers.*') }}"><i class="bi bi-envelope-paper"></i> Subscribers</a>
         <a href="{{ route('admin.messages.index') }}" class="nav-item-link {{ $link('', 'admin.messages.*') }}"><i class="bi bi-chat-left-text"></i> Messages @if ($unreadMessages)<span class="badge">{{ $unreadMessages }}</span>@endif</a>
+
+        <a href="{{ route('admin.pages.index') }}" class="nav-item-link {{ $link('', 'admin.pages.*') }}"><i class="bi bi-file-earmark-text"></i> Pages</a>
 
         <div class="nav-section">System</div>
         <a href="{{ route('admin.settings.edit') }}" class="nav-item-link {{ $link('', 'admin.settings.*') }}"><i class="bi bi-gear"></i> Settings</a>
