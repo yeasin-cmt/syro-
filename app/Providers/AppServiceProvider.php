@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Filesystem\VercelBlobAdapter;
 use App\Models\Category;
 use App\Services\CartService;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Filesystem;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +23,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
+
+        // "vercel_blob" disk driver — image storage on Vercel, where local files are not kept.
+        Storage::extend('vercel_blob', function ($app, array $config) {
+            $adapter = new VercelBlobAdapter((string) $config['token'], $config['url'] ?? null);
+
+            return new FilesystemAdapter(new Filesystem($adapter, $config), $adapter, $config);
+        });
 
         // Wishlist state for product cards — queried once per request.
         View::composer('partials.product-card', function ($view) {

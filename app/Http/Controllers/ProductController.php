@@ -14,7 +14,7 @@ class ProductController extends Controller
         $product->increment('views');
 
         $reviews = $product->approvedReviews()->with('user:id,name')->paginate(5, ['*'], 'reviews');
-        $ratingStats = $product->approvedReviews()->selectRaw('rating, count(*) as total')->groupBy('rating')->pluck('total', 'rating');
+        $ratingStats = $product->approvedReviews()->reorder()->selectRaw('rating, count(*) as total')->groupBy('rating')->pluck('total', 'rating');
 
         $related = Product::active()->with(['images', 'variants', 'brand'])->withAvg('approvedReviews', 'rating')
             ->where('category_id', $product->category_id)

@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
         $products = Product::with(['images', 'category', 'brand'])
             ->withCount('variants')
-            ->when($request->q, fn ($q, $term) => $q->where(fn ($q) => $q->where('name', 'like', "%{$term}%")->orWhere('sku', 'like', "%{$term}%")))
+            ->when($request->q, fn ($q, $term) => $q->where(fn ($q) => $q->whereLike('name', "%{$term}%")->orWhereLike('sku', "%{$term}%")))
             ->when($request->category, fn ($q, $id) => $q->where('category_id', $id))
             ->when($request->status === 'active', fn ($q) => $q->where('is_active', true))
             ->when($request->status === 'inactive', fn ($q) => $q->where('is_active', false))

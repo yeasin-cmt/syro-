@@ -13,10 +13,10 @@ class OrderController extends Controller
     {
         $orders = Order::withCount('items')
             ->when($request->q, fn ($q, $term) => $q->where(fn ($q) => $q
-                ->where('order_number', 'like', "%{$term}%")
-                ->orWhere('name', 'like', "%{$term}%")
-                ->orWhere('phone', 'like', "%{$term}%")
-                ->orWhere('email', 'like', "%{$term}%")))
+                ->whereLike('order_number', "%{$term}%")
+                ->orWhereLike('name', "%{$term}%")
+                ->orWhereLike('phone', "%{$term}%")
+                ->orWhereLike('email', "%{$term}%")))
             ->when($request->status, fn ($q, $s) => $q->where('status', $s))
             ->when($request->payment_status, fn ($q, $s) => $q->where('payment_status', $s))
             ->when($request->from, fn ($q, $d) => $q->whereDate('created_at', '>=', $d))

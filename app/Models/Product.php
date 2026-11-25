@@ -88,11 +88,12 @@ class Product extends Model
     {
         $query->when($f['q'] ?? null, function (Builder $q, string $term) {
             $q->where(function (Builder $q) use ($term) {
-                $q->where('name', 'like', "%{$term}%")
-                    ->orWhere('sku', 'like', "%{$term}%")
-                    ->orWhere('short_description', 'like', "%{$term}%")
-                    ->orWhereHas('brand', fn ($b) => $b->where('name', 'like', "%{$term}%"))
-                    ->orWhereHas('category', fn ($c) => $c->where('name', 'like', "%{$term}%"));
+                // whereLike is case-insensitive on every driver (ILIKE on PostgreSQL).
+                $q->whereLike('name', "%{$term}%")
+                    ->orWhereLike('sku', "%{$term}%")
+                    ->orWhereLike('short_description', "%{$term}%")
+                    ->orWhereHas('brand', fn ($b) => $b->whereLike('name', "%{$term}%"))
+                    ->orWhereHas('category', fn ($c) => $c->whereLike('name', "%{$term}%"));
             });
         });
 
@@ -102,9 +103,9 @@ class Product extends Model
         $query->when($f['colors'] ?? null, fn (Builder $q, array $colors) => $q->whereHas('variants', fn ($v) => $v->whereIn('color', $colors)->where('stock', '>', 0)));
 
         $priceExpr = 'COALESCE(sale_price, price)';
-        // "(? + 0)" forces a numeric comparison on every driver (PDO binds floats as strings).
-        $query->when(isset($f['min_price']) && $f['min_price'] !== null, fn (Builder $q) => $q->whereRaw("{$priceExpr} >= (? + 0)", [(float) $f['min_price']]));
-        $query->when(isset($f['max_price']) && $f['max_price'] !== null, fn (Builder $q) => $q->whereRaw("{$priceExpr} <= (? + 0)", [(float) $f['max_price']]));
+        // The CAST forces a numeric comparison on MySQL, PostgreSQL and SQLite (PDO binds floats as strings).
+        $query->when(isset($f['min_price']) && $f['min_price'] !== null, fn (Builder $q) => $q->whereRaw("{$priceExpr} >= CAST(? AS DECIMAL(12,2))", [(float) $f['min_price']]));
+        $query->when(isset($f['max_price']) && $f['max_price'] !== null, fn (Builder $q) => $q->whereRaw("{$priceExpr} <= CAST(? AS DECIMAL(12,2))", [(float) $f['max_price']]));
 
         $query->when(($f['availability'] ?? null) === 'in_stock', fn (Builder $q) => $q->where('stock', '>', 0));
         $query->when(($f['availability'] ?? null) === 'out_of_stock', fn (Builder $q) => $q->where('stock', 0));

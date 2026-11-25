@@ -26,4 +26,14 @@ class MediaUrlTest extends TestCase
             media_url('products/AbC123.webp')
         );
     }
+
+    public function test_vercel_blob_url_is_built_from_the_store_id_in_the_token(): void
+    {
+        config(['filesystems.disks.public' => ['driver' => 'vercel_blob', 'token' => 'vercel_blob_rw_AbCd1234XyZ_secretpart', 'url' => null]]);
+
+        $this->assertSame(
+            'https://abcd1234xyz.public.blob.vercel-storage.com/products/My%20Photo.jpg',
+            media_url('products/My Photo.jpg')
+        );
+    }
 }

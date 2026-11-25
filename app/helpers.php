@@ -38,6 +38,11 @@ if (! function_exists('media_url')) {
 
             return "https://res.cloudinary.com/{$cloud}/image/upload/f_auto,q_auto/{$publicId}";
         }
+        if (($disk['driver'] ?? null) === 'vercel_blob') {
+            $base = rtrim($disk['url'] ?: App\Filesystem\VercelBlobAdapter::publicBaseUrl((string) ($disk['token'] ?? '')), '/');
+
+            return $base.'/'.implode('/', array_map('rawurlencode', explode('/', ltrim(str_replace('\\', '/', $path), '/'))));
+        }
 
         return Illuminate\Support\Facades\Storage::disk('public')->url($path);
     }

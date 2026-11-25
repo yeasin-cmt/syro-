@@ -10,7 +10,7 @@ class SubscriberController extends Controller
 {
     public function index(Request $request)
     {
-        $subscribers = NewsletterSubscriber::when($request->q, fn ($q, $t) => $q->where('email', 'like', "%{$t}%"))
+        $subscribers = NewsletterSubscriber::when($request->q, fn ($q, $t) => $q->whereLike('email', "%{$t}%"))
             ->latest()->paginate(50)->withQueryString();
 
         return view('admin.subscribers.index', compact('subscribers'));

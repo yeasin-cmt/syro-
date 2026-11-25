@@ -28,3 +28,5 @@ yarn-error.log
 # Vercel CLI (never commit)
 .vercel
 .vercel-token
+.vercel
+.env*

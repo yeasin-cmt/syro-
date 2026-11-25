@@ -39,14 +39,25 @@ return [
         ],
 
         // Product images, banners and logos.
-        // PUBLIC_DISK_DRIVER=cloudinary (serverless hosts like Vercel, where local files are not kept)
-        // stores them on Cloudinary using CLOUDINARY_URL; otherwise they are stored locally.
-        'public' => env('PUBLIC_DISK_DRIVER') === 'cloudinary' ? [
-            'driver' => 'cloudinary',
-            'url' => env('CLOUDINARY_URL'),
-            'throw' => false,
-            'report' => true,
-        ] : [
+        // Serverless hosts (Vercel) do not keep local files, so set PUBLIC_DISK_DRIVER to:
+        //   vercel_blob → Vercel Blob (uses BLOB_READ_WRITE_TOKEN, added by Vercel automatically)
+        //   cloudinary  → Cloudinary (uses CLOUDINARY_URL)
+        // Otherwise files are stored locally.
+        'public' => match (env('PUBLIC_DISK_DRIVER')) {
+            'vercel_blob' => [
+                'driver' => 'vercel_blob',
+                'token' => env('BLOB_READ_WRITE_TOKEN'),
+                'url' => env('BLOB_PUBLIC_URL'),
+                'throw' => false,
+                'report' => true,
+            ],
+            'cloudinary' => [
+                'driver' => 'cloudinary',
+                'url' => env('CLOUDINARY_URL'),
+                'throw' => false,
+                'report' => true,
+            ],
+            default => [
             'driver' => 'local',
             // On hosts without symlink support (e.g. InfinityFree) set PUBLIC_DISK_ROOT=public/storage
             // so uploads are written straight into the web folder.
@@ -56,7 +67,8 @@ return [
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
-        ],
+            ],
+        },
 
         's3' => [
             'driver' => 's3',

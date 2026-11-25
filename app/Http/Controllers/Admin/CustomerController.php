@@ -21,9 +21,9 @@ class CustomerController extends Controller
             ->when($request->role === 'admin', fn ($q) => $q->where('role', User::ROLE_ADMIN))
             ->when($request->role !== 'admin' && $request->role !== 'all', fn ($q) => $q->where('role', User::ROLE_CUSTOMER))
             ->when($request->q, fn ($q, $term) => $q->where(fn ($q) => $q
-                ->where('name', 'like', "%{$term}%")
-                ->orWhere('email', 'like', "%{$term}%")
-                ->orWhere('phone', 'like', "%{$term}%")))
+                ->whereLike('name', "%{$term}%")
+                ->orWhereLike('email', "%{$term}%")
+                ->orWhereLike('phone', "%{$term}%")))
             ->latest()
             ->paginate(25)
             ->withQueryString();
