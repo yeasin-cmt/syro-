@@ -2,6 +2,12 @@
 
 A full fashion & lifestyle e-commerce platform for Bangladesh (BDT ৳, Asia/Dhaka), built with **Laravel 12, MySQL, Blade, Bootstrap 5 and Vite**.
 
+## 🌐 Live site
+
+**https://syro-three.vercel.app**
+
+Hosted on Vercel, with a Neon PostgreSQL database and Vercel Blob for product images. Admin panel: https://syro-three.vercel.app/admin
+
 ## Features
 
 **Storefront** — editorial homepage (hero slider, featured categories, new arrivals, best sellers, trending, promo banners), shop with AJAX filtering (category, brand, price, size, colour, availability, sale) and sorting, live search suggestions, product pages with gallery/zoom and size/colour variant picker, reviews (verified buyers only, moderated), wishlist, cart with coupons, guest or account checkout, order tracking by order number + phone, customer account (orders, cancel, profile, password), newsletter, contact form, content pages.
