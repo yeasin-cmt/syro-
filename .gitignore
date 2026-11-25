@@ -24,3 +24,7 @@ yarn-error.log
 /.zed
 
 /deploy
+
+# Vercel CLI (never commit)
+.vercel
+.vercel-token

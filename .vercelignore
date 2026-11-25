@@ -14,3 +14,4 @@ index.html
 *.bat
 .env
 .env.*
+.vercel-token
