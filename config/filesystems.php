@@ -40,8 +40,11 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            // On hosts without symlink support (e.g. InfinityFree) set PUBLIC_DISK_ROOT=public/storage
+            // so uploads are written straight into the web folder.
+            'root' => env('PUBLIC_DISK_ROOT') ? base_path(env('PUBLIC_DISK_ROOT')) : storage_path('app/public'),
+            // Relative URL works on any domain (localhost, tunnel, live host).
+            'url' => env('PUBLIC_DISK_URL', '/storage'),
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
