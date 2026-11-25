@@ -82,7 +82,11 @@ class CatalogSeeder extends Seeder
     public function run(): void
     {
         $gen = new DemoImageGenerator();
-        Storage::disk('public')->deleteDirectory('demo');
+        try {
+            Storage::disk('public')->deleteDirectory('demo');
+        } catch (\Throwable $e) {
+            // Nothing to clean on a fresh cloud account.
+        }
 
         // Brands
         $brands = collect(self::BRANDS)->mapWithKeys(fn ($name) => [

@@ -18,6 +18,6 @@ class ProductImage extends Model
 
     public function getUrlAttribute(): string
     {
-        return Str::startsWith($this->path, ['http://', 'https://']) ? $this->path : Storage::url($this->path);
+        return media_url($this->path);
     }
 }

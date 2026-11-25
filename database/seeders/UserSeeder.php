@@ -14,13 +14,14 @@ class UserSeeder extends Seeder
         $adminPassword = env('SEED_ADMIN_PASSWORD') ?: 'Sy-'.Str::random(14);
         $customerPassword = 'Sy-'.Str::random(16);
 
-        $admin = User::updateOrCreate(['email' => 'admin@syro.test'], [
+        $adminEmail = env('SEED_ADMIN_EMAIL') ?: 'admin@syro.test';
+        $admin = User::updateOrCreate(['email' => $adminEmail], [
             'name' => 'SYRO Admin',
             'password' => $adminPassword,
             'phone' => '01700000000',
         ]);
         $admin->forceFill(['role' => User::ROLE_ADMIN, 'is_active' => true, 'email_verified_at' => now()])->save();
-        $this->command?->warn("Admin login: admin@syro.test / {$adminPassword}  (change it after signing in)");
+        $this->command?->warn("Admin login: {$adminEmail} / {$adminPassword}  (change it after signing in)");
 
         $customer = User::updateOrCreate(['email' => 'customer@syro.test'], [
             'name' => 'Nusrat Jahan',

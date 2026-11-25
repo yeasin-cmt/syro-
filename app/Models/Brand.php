@@ -33,6 +33,6 @@ class Brand extends Model
 
     public function getLogoUrlAttribute(): ?string
     {
-        return $this->logo ? Storage::url($this->logo) : null;
+        return media_url($this->logo);
     }
 }

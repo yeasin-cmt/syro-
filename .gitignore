@@ -1,6 +1,6 @@
 /.phpunit.cache
 /node_modules
-/public/build
+# public/build is committed on purpose: Vercel serves these prebuilt assets (run "npm run build" before pushing).
 /public/hot
 /public/storage
 /storage/*.key
@@ -9,6 +9,7 @@
 .env
 .env.backup
 .env.production
+.env.vercel
 .phpactor.json
 .phpunit.result.cache
 Homestead.json

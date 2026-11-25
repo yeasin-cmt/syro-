@@ -38,7 +38,15 @@ return [
             'report' => false,
         ],
 
-        'public' => [
+        // Product images, banners and logos.
+        // PUBLIC_DISK_DRIVER=cloudinary (serverless hosts like Vercel, where local files are not kept)
+        // stores them on Cloudinary using CLOUDINARY_URL; otherwise they are stored locally.
+        'public' => env('PUBLIC_DISK_DRIVER') === 'cloudinary' ? [
+            'driver' => 'cloudinary',
+            'url' => env('CLOUDINARY_URL'),
+            'throw' => false,
+            'report' => true,
+        ] : [
             'driver' => 'local',
             // On hosts without symlink support (e.g. InfinityFree) set PUBLIC_DISK_ROOT=public/storage
             // so uploads are written straight into the web folder.

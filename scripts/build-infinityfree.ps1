@@ -41,10 +41,17 @@ Get-ChildItem (Join-Path $out 'bootstrap\cache') -Filter *.php | Remove-Item -Fo
 Write-Host '3/7 Installing production PHP packages (no dev tools)...' -ForegroundColor Cyan
 Push-Location $out
 $env:COMPOSER_PROCESS_TIMEOUT = '120'
-# --no-scripts: package discovery is run below with an explicit, short-lived PHP call.
-composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts 2>&1 | Select-Object -Last 3
-if ($LASTEXITCODE -ne 0) { throw 'composer install failed' }
-& $php artisan package:discover --ansi 2>&1 | Select-Object -Last 2
+# Composer and artisan print normal progress on stderr; Windows PowerShell 5.1 would treat that as a
+# fatal error under 'Stop', so relax it for these native calls and check the exit codes instead.
+$ErrorActionPreference = 'Continue'
+# --no-scripts: package discovery is run below with an explicit PHP call.
+cmd /c "composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts 2>&1"
+$composerExit = $LASTEXITCODE
+cmd /c "`"$php`" artisan package:discover 2>&1"
+$discoverExit = $LASTEXITCODE
+$ErrorActionPreference = 'Stop'
+if ($composerExit -ne 0) { throw "composer install failed ($composerExit)" }
+if ($discoverExit -ne 0) { throw "package:discover failed ($discoverExit)" }
 Pop-Location
 
 Write-Host '4/7 Copying product images into the web folder...' -ForegroundColor Cyan

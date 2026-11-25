@@ -1,0 +1,16 @@
+node_modules
+tests
+deploy
+docs
+scripts
+storage/app/public/*
+storage/logs/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/cache/data/*
+public/storage
+public/hot
+index.html
+*.bat
+.env
+.env.*

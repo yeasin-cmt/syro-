@@ -57,8 +57,9 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            // DB_SSL=true (TiDB Cloud and other cloud databases) uses the bundled CA certificates.
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA') ?: (env('DB_SSL') ? base_path('certs/cacert.pem') : null),
             ]) : [],
         ],
 
@@ -77,8 +78,9 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            // DB_SSL=true (TiDB Cloud and other cloud databases) uses the bundled CA certificates.
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA') ?: (env('DB_SSL') ? base_path('certs/cacert.pem') : null),
             ]) : [],
         ],
 

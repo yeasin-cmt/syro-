@@ -91,10 +91,8 @@ class ProductController extends Controller
     {
         abort_unless($image->product_id === $product->id, 404);
 
-        if (! str_starts_with($image->path, 'http')) {
-            Storage::disk('public')->delete($image->path);
-        }
         $image->delete();
+        $this->deleteFileIfUnused($image->path);
 
         return back()->with('success', 'Image removed.');
     }
@@ -220,14 +218,9 @@ class ProductController extends Controller
             foreach ($product->variants as $v) {
                 $copy->variants()->create($v->only(['size', 'color', 'color_hex', 'stock', 'price']) + ['sku' => $v->sku ? $v->sku.'-C' : null]);
             }
+            // Photos are shared with the original; a file is only deleted once no product uses it.
             foreach ($product->images as $img) {
-                $path = $img->path;
-                if (! str_starts_with($path, 'http') && Storage::disk('public')->exists($path)) {
-                    $newPath = 'products/'.uniqid().'-'.basename($path);
-                    Storage::disk('public')->copy($path, $newPath);
-                    $path = $newPath;
-                }
-                $copy->images()->create(['path' => $path, 'alt' => $img->alt, 'sort_order' => $img->sort_order]);
+                $copy->images()->create(['path' => $img->path, 'alt' => $img->alt, 'sort_order' => $img->sort_order]);
             }
 
             return $copy;
@@ -256,18 +249,32 @@ class ProductController extends Controller
     public function forceDelete(int $id)
     {
         $product = Product::onlyTrashed()->with('images')->findOrFail($id);
+        $paths = $product->images->pluck('path');
 
-        foreach ($product->images as $img) {
-            if (! str_starts_with($img->path, 'http')) {
-                Storage::disk('public')->delete($img->path);
-            }
-        }
-        $product->forceDelete(); // order history keeps the product name and price
+        $product->forceDelete(); // order history keeps the product name and price; image rows cascade
+        $paths->each(fn ($path) => $this->deleteFileIfUnused($path));
 
         return back()->with('success', "“{$product->name}” permanently deleted.");
     }
 
     /* ---------------------------------------------------------------- */
+
+    /**
+     * Remove a stored image file once no product image refers to it any more.
+     * Storage errors (e.g. the cloud is unreachable) never block the database change.
+     */
+    protected function deleteFileIfUnused(string $path): void
+    {
+        if (str_starts_with($path, 'http') || ProductImage::where('path', $path)->exists()) {
+            return;
+        }
+
+        try {
+            Storage::disk('public')->delete($path);
+        } catch (\Throwable $e) {
+            report($e);
+        }
+    }
 
     protected function formData(Product $product): array
     {

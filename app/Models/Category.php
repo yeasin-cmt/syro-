@@ -62,6 +62,6 @@ class Category extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        return $this->image ? Storage::url($this->image) : null;
+        return media_url($this->image);
     }
 }
