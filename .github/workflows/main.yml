@@ -28,7 +28,7 @@ jobs:
           node-version: '20'
 
       - name: Install Laravel Dependencies
-        run: composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader
+        run: composer install --no-dev --prefer-dist --no-interaction --no-progress
 
       - name: Install Frontend Dependencies
         run: npm ci
