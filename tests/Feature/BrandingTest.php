@@ -61,6 +61,27 @@ class BrandingTest extends TestCase
         $this->get('/')->assertOk()->assertDontSee('syro-logo--img', false);
     }
 
+    public function test_logo_can_be_managed_from_the_banners_page(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)->get(route('admin.banners.index'))->assertOk()
+            ->assertSee('Logo &amp; branding', false)
+            ->assertSee('Homepage banners');
+
+        $this->actingAs($admin)->from(route('admin.banners.index'))->post(route('admin.settings.branding'), [
+            'logo' => UploadedFile::fake()->image('logo.png'),
+            'logo_height' => 40,
+        ])->assertRedirect(route('admin.banners.index'));
+
+        $this->actingAs($admin)->get(route('admin.banners.index'))->assertSee(media_url(setting('logo')), false)
+            ->assertSee('form="delete-logo"', false);
+
+        // Visitors see it
+        $this->get('/')->assertSee(media_url(setting('logo')), false);
+    }
+
     public function test_light_logo_is_used_on_dark_backgrounds(): void
     {
         Storage::fake('public');

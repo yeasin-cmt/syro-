@@ -3,6 +3,10 @@
 @section('title', 'Banners')
 
 @section('content')
+<div id="logo">
+    @include('admin.partials.branding')
+</div>
+
 <div class="admin-card">
     <div class="card-head"><h2>Homepage banners</h2><a href="{{ route('admin.banners.create') }}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Add banner</a></div>
     <div class="table-responsive">

@@ -40,6 +40,7 @@
         <div class="nav-section">Customers &amp; marketing</div>
         <a href="{{ route('admin.customers.index') }}" class="nav-item-link {{ $link('', 'admin.customers.*') }}"><i class="bi bi-people"></i> Users</a>
         <a href="{{ route('admin.coupons.index') }}" class="nav-item-link {{ $link('', 'admin.coupons.*') }}"><i class="bi bi-ticket-perforated"></i> Coupons</a>
+        <a href="{{ route('admin.banners.index') }}#logo" class="nav-item-link"><i class="bi bi-gem"></i> Logo</a>
         <a href="{{ route('admin.banners.index') }}" class="nav-item-link {{ $link('', 'admin.banners.*') }}"><i class="bi bi-images"></i> Banners</a>
         <a href="{{ route('admin.subscribers.index') }}" class="nav-item-link {{ $link('', 'admin.subscribers.*') }}"><i class="bi bi-envelope-paper"></i> Subscribers</a>
         <a href="{{ route('admin.messages.index') }}" class="nav-item-link {{ $link('', 'admin.messages.*') }}"><i class="bi bi-chat-left-text"></i> Messages @if ($unreadMessages)<span class="badge">{{ $unreadMessages }}</span>@endif</a>
