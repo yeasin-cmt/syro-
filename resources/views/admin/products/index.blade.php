@@ -68,7 +68,7 @@
             <thead>
                 <tr>
                     <th style="width:36px"><input type="checkbox" class="form-check-input" data-select-all aria-label="Select all"></th>
-                    <th></th><th>Product</th><th>Price ৳</th><th>Sale ৳</th><th>Stock</th><th>Visible</th><th>Sold</th><th class="text-end">Actions</th>
+                    <th></th><th>Product</th><th>Price (BDT)</th><th>Sale (BDT)</th><th>Stock</th><th>Visible</th><th>Sold</th><th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>

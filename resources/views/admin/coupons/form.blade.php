@@ -12,12 +12,12 @@
             <label class="form-label">Type</label>
             <select name="type" class="form-select">
                 <option value="percent" @selected(old('type', $coupon->type) === 'percent')>Percentage</option>
-                <option value="fixed" @selected(old('type', $coupon->type) === 'fixed')>Fixed (৳)</option>
+                <option value="fixed" @selected(old('type', $coupon->type) === 'fixed')>Fixed (BDT)</option>
             </select>
         </div>
         <div class="col-md-3"><label class="form-label">Value</label><input type="number" step="0.01" min="1" name="value" class="form-control" value="{{ old('value', $coupon->value) }}" required></div>
-        <div class="col-md-4"><label class="form-label">Minimum order (৳)</label><input type="number" step="0.01" min="0" name="min_order_amount" class="form-control" value="{{ old('min_order_amount', $coupon->min_order_amount) }}"></div>
-        <div class="col-md-4"><label class="form-label">Max discount (৳)</label><input type="number" step="0.01" min="0" name="max_discount" class="form-control" value="{{ old('max_discount', $coupon->max_discount) }}" placeholder="No cap"></div>
+        <div class="col-md-4"><label class="form-label">Minimum order (BDT)</label><input type="number" step="0.01" min="0" name="min_order_amount" class="form-control" value="{{ old('min_order_amount', $coupon->min_order_amount) }}"></div>
+        <div class="col-md-4"><label class="form-label">Max discount (BDT)</label><input type="number" step="0.01" min="0" name="max_discount" class="form-control" value="{{ old('max_discount', $coupon->max_discount) }}" placeholder="No cap"></div>
         <div class="col-md-4"><label class="form-label">Usage limit</label><input type="number" min="1" name="usage_limit" class="form-control" value="{{ old('usage_limit', $coupon->usage_limit) }}" placeholder="Unlimited"></div>
         <div class="col-md-6"><label class="form-label">Starts</label><input type="datetime-local" name="starts_at" class="form-control" value="{{ old('starts_at', $coupon->starts_at?->format('Y-m-d\TH:i')) }}"></div>
         <div class="col-md-6"><label class="form-label">Expires</label><input type="datetime-local" name="expires_at" class="form-control" value="{{ old('expires_at', $coupon->expires_at?->format('Y-m-d\TH:i')) }}"></div>

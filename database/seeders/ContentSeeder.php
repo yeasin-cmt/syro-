@@ -18,7 +18,7 @@ class ContentSeeder extends Seeder
         $banners = [
             ['hero', 'The New Season Edit', 'Considered silhouettes in linen, silk and soft cotton — designed for Dhaka days and evenings.', 'Autumn / Winter 2026', '/shop?sort=newest', 'Shop new in', [17, 17, 17], [58, 48, 38]],
             ['hero', 'Festive, Refined', 'Handloom sarees and panjabis reimagined with a modern sensibility.', 'The Heritage Collection', '/category/panjabi', 'Explore heritage', [30, 26, 22], [92, 70, 48]],
-            ['hero', 'Up to 25% Off', 'Selected pieces, for a limited time. Free delivery over ৳3,000.', 'Season sale', '/shop?on_sale=1', 'Shop the sale', [20, 22, 26], [46, 58, 70]],
+            ['hero', 'Up to 25% Off', 'Selected pieces, for a limited time. Free delivery over BDT 3,000.', 'Season sale', '/shop?on_sale=1', 'Shop the sale', [20, 22, 26], [46, 58, 70]],
             ['promo', 'Accessories, Elevated', 'Leather bags, watches and eyewear.', 'Finishing touches', '/category/accessories', 'Discover', [40, 32, 26], [110, 86, 62]],
             ['promo', 'Sneaker Season', 'Comfort that keeps up with the city.', 'Footwear', '/category/footwear', 'Shop footwear', [26, 30, 32], [70, 80, 84]],
         ];

@@ -319,7 +319,7 @@ if (checkout) {
     const subtotal = parseFloat(checkout.dataset.subtotal);
     const discount = parseFloat(checkout.dataset.discount);
     const threshold = parseFloat(checkout.dataset.threshold);
-    const fmt = (n) => '৳' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    const fmt = (n) => 'BDT ' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
 
     const update = () => {
         const zone = $('input[name="shipping_zone"]:checked', checkout)?.value || 'inside_dhaka';

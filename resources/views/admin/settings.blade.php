@@ -21,7 +21,7 @@
         </div>
         <div class="col-lg-6">
             <div class="admin-card mb-3">
-                <div class="card-head"><h2>Delivery charges (৳)</h2></div>
+                <div class="card-head"><h2>Delivery charges (BDT)</h2></div>
                 <div class="card-pad row g-3">
                     <div class="col-md-4"><label class="form-label">Inside Dhaka</label><input type="number" min="0" step="1" name="shipping_inside_dhaka" class="form-control" value="{{ old('shipping_inside_dhaka', $s['shipping_inside_dhaka']) }}" required></div>
                     <div class="col-md-4"><label class="form-label">Outside Dhaka</label><input type="number" min="0" step="1" name="shipping_outside_dhaka" class="form-control" value="{{ old('shipping_outside_dhaka', $s['shipping_outside_dhaka']) }}" required></div>

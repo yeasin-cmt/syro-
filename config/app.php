@@ -69,7 +69,7 @@ return [
 
     'currency' => env('APP_CURRENCY', 'BDT'),
 
-    'currency_symbol' => env('APP_CURRENCY_SYMBOL', '৳'),
+    'currency_symbol' => env('APP_CURRENCY_SYMBOL', 'BDT'),
 
     /*
     |--------------------------------------------------------------------------

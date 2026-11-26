@@ -12,7 +12,7 @@
     "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2"
   },
   "resources/js/admin.js": {
-    "file": "assets/admin-Czh-3Hk-.js",
+    "file": "assets/admin-C-JcnHQf.js",
     "name": "admin",
     "src": "resources/js/admin.js",
     "isEntry": true,
@@ -21,7 +21,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-CuB9a0KZ.js",
+    "file": "assets/app-CyAqg9Ld.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,

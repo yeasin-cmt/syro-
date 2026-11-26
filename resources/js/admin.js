@@ -32,10 +32,10 @@ if (canvas) {
         },
         options: {
             maintainAspectRatio: false,
-            plugins: { tooltip: { callbacks: { label: (c) => '৳' + c.parsed.y.toLocaleString('en-US') } } },
+            plugins: { tooltip: { callbacks: { label: (c) => 'BDT ' + c.parsed.y.toLocaleString('en-US') } } },
             scales: {
                 x: { grid: { display: false }, ticks: { maxTicksLimit: 8, color: '#777' } },
-                y: { beginAtZero: true, grid: { color: '#eee' }, ticks: { color: '#777', callback: (v) => '৳' + v.toLocaleString('en-US') } },
+                y: { beginAtZero: true, grid: { color: '#eee' }, ticks: { color: '#777', callback: (v) => 'BDT ' + v.toLocaleString('en-US') } },
             },
         },
     });

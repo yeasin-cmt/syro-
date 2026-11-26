@@ -19,7 +19,7 @@ class Setting extends Model
         'store_email' => 'support@syro.com.bd',
         'store_phone' => '+880 1700-000000',
         'store_address' => 'House 12, Road 7, Gulshan 1, Dhaka 1212, Bangladesh',
-        'announcement_text' => 'Free delivery on orders over ৳3,000 · Easy 7-day returns',
+        'announcement_text' => 'Free delivery on orders over BDT 3,000 · Easy 7-day returns',
         'shipping_inside_dhaka' => '70',
         'shipping_outside_dhaka' => '130',
         'free_shipping_threshold' => '3000',

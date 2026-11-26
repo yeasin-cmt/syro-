@@ -71,7 +71,7 @@ class ShoppingFlowTest extends TestCase
         $order = Order::first();
         $response->assertRedirect(route('checkout.success', $order));
         $this->assertSame('3000.00', $order->subtotal);
-        $this->assertSame('0.00', $order->shipping_cost, 'Free delivery at the ৳3,000 threshold');
+        $this->assertSame('0.00', $order->shipping_cost, 'Free delivery at the BDT 3,000 threshold');
         $this->assertSame('pending', $order->status);
         $this->assertSame(3, $product->fresh()->stock);
         $this->assertSame(2, $product->fresh()->sold_count);

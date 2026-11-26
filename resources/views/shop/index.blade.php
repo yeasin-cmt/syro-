@@ -82,7 +82,7 @@
                         @endif
 
                         <div class="filter-group">
-                            <div class="filter-title">Price (৳)</div>
+                            <div class="filter-title">Price (BDT)</div>
                             <div class="d-flex gap-2 align-items-center">
                                 <input type="number" name="min_price" min="0" value="{{ $filters['min_price'] }}" class="form-control form-control-sm" placeholder="0" aria-label="Minimum price">
                                 <span class="text-muted">–</span>
