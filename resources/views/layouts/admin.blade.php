@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow">
     <title>@yield('title', 'Dashboard') — SYRO Admin</title>
-    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    @include('partials.favicon')
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=cormorant-garamond:500,600|inter:400,500,600" rel="stylesheet">
     @vite(['resources/scss/app.scss', 'resources/js/admin.js'])
@@ -21,7 +21,7 @@
 
 <aside class="admin-sidebar" id="admin-sidebar">
     <div class="px-4 py-4 border-bottom" style="border-color: rgba(255,255,255,.08) !important">
-        <a href="{{ route('admin.dashboard') }}" class="syro-logo">SYRO</a>
+        <x-logo variant="light" :href="route('admin.dashboard')" :height="min(36, (int) setting('logo_height', 40))" />
         <div class="small mt-1" style="letter-spacing:.2em;font-size:.6rem;color:#B69A70">ADMIN</div>
     </div>
     <nav class="pb-4">

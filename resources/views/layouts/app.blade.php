@@ -7,7 +7,7 @@
     <title>@hasSection('title')@yield('title') — {{ setting('store_name') }}@else{{ setting('store_name') }} — {{ setting('store_tagline') }}@endif</title>
     <meta name="description" content="@yield('meta_description', 'SYRO — premium fashion and lifestyle in Bangladesh. Modern shopping, premium experience.')">
     <meta name="theme-color" content="#111111">
-    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    @include('partials.favicon')
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=cormorant-garamond:500,600|inter:400,500,600" rel="stylesheet">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
@@ -56,7 +56,7 @@
                 </div>
 
                 {{-- Centre: logo --}}
-                <a href="{{ route('home') }}" class="syro-logo" aria-label="SYRO home">SYRO</a>
+                <x-logo :href="route('home')" />
 
                 {{-- Right: icons --}}
                 <div class="header-icons d-flex justify-content-end align-items-center">
@@ -90,7 +90,7 @@
     {{-- Mobile menu --}}
     <div class="offcanvas offcanvas-start" tabindex="-1" id="mobile-menu" aria-label="Menu">
         <div class="offcanvas-header border-bottom">
-            <span class="syro-logo" style="font-size:1.4rem">SYRO</span>
+            <x-logo style="font-size:1.4rem" :height="min(32, (int) setting('logo_height', 40))" />
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
@@ -149,7 +149,7 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-4">
-                    <a href="{{ route('home') }}" class="syro-logo d-inline-block mb-3">SYRO</a>
+                    <x-logo variant="light" :href="route('home')" class="d-inline-block mb-3" />
                     <p class="mb-4" style="max-width: 32ch">{{ setting('store_tagline') }} Considered fashion and lifestyle pieces, delivered across Bangladesh.</p>
                     <div class="social d-flex gap-2">
                         @foreach (['facebook' => 'facebook', 'instagram' => 'instagram', 'youtube' => 'youtube', 'tiktok' => 'tiktok'] as $key => $icon)

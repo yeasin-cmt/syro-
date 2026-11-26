@@ -30,6 +30,11 @@ class Setting extends Model
         'social_instagram' => 'https://instagram.com/',
         'social_youtube' => 'https://youtube.com/',
         'social_tiktok' => 'https://tiktok.com/',
+        // Branding (paths on the "public" disk; empty = show the store name as text / default icon)
+        'logo' => '',
+        'logo_light' => '',
+        'favicon' => '',
+        'logo_height' => '40',
     ];
 
     public static function cached(): array

@@ -24,7 +24,11 @@
 <div class="wrap">
     <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
-            <div class="logo">SYRO</div>
+            @if (setting('logo'))
+                <img src="{{ media_url(setting('logo')) }}" alt="{{ setting('store_name') }}" style="height:44px;width:auto">
+            @else
+                <div class="logo">{{ setting('store_name') }}</div>
+            @endif
             <div class="muted" style="margin-top:6px">{{ setting('store_address') }}<br>{{ setting('store_phone') }} · {{ setting('store_email') }}</div>
         </div>
         <div class="r">

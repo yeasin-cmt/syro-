@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Page not found — SYRO</title>
     <link href="https://fonts.bunny.net/css?family=cormorant-garamond:500,600|inter:400,500,600" rel="stylesheet">
+    @include('partials.favicon')
     @vite(['resources/scss/app.scss'])
 </head>
 <body class="d-flex align-items-center min-vh-100">
     <div class="container text-center py-5">
-        <a href="{{ url('/') }}" class="syro-logo d-inline-block mb-5">SYRO</a>
+        <x-logo :href="url('/')" class="d-inline-block mb-5" />
         <div class="eyebrow">Error 404</div>
         <h1 class="section-title mt-2">This page has moved on</h1>
         <p class="text-muted mb-4">The page you were looking for doesn't exist or is no longer available.</p>
